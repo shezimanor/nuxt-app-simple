@@ -1,5 +1,8 @@
 <script lang="ts" setup>
-const list = Array.from({ length: 15 }, (_, i) => `list item: ${i}`);
+const list = Array.from({ length: 300 }, (_, i) => ({
+  data: `list item: ${i}`,
+  id: i
+}));
 </script>
 
 <template>
