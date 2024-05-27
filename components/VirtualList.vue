@@ -8,21 +8,26 @@ const props = defineProps({
   itemHeight: {
     type: Number,
     default: 100
-  },
-  windowHeight: {
-    type: Number,
-    default: 500
   }
 });
+const el = ref(null);
 const edgeCount = ref(5);
 const scrollTop = ref(0);
 const startIndex = ref(0);
+const windowHeight = ref(500);
 const endIndex = ref(
   Math.min(
     props.list.length - 1,
-    Math.floor(props.windowHeight / props.itemHeight) + edgeCount.value
+    Math.floor(windowHeight.value / props.itemHeight) + edgeCount.value
   )
 );
+useResizeObserver(el, (entries) => {
+  console.log('useResizeObserver');
+  const entry = entries[0];
+  const { height } = entry.contentRect;
+  windowHeight.value = height;
+  getNewIndex();
+});
 const itemCount = computed(() => props.list.length);
 // 原始長清單的 index 應該要被存在 item 裡面
 const virtualList = computed(() =>
@@ -36,26 +41,23 @@ const renderList = computed(() =>
 const onScroll = (e: Event) => {
   const target = e.target as HTMLElement;
   scrollTop.value = target.scrollTop;
+  getNewIndex();
+};
+const getNewIndex = () => {
   startIndex.value = Math.max(
     0,
     Math.floor(scrollTop.value / props.itemHeight) - edgeCount.value
   );
   endIndex.value = Math.min(
     props.list.length - 1,
-    Math.floor((scrollTop.value + props.windowHeight) / props.itemHeight) +
+    Math.floor((scrollTop.value + windowHeight.value) / props.itemHeight) +
       edgeCount.value
   );
 };
 </script>
 
 <template>
-  <div
-    class="v-window"
-    :style="{
-      height: `${windowHeight}px`
-    }"
-    @scroll="onScroll"
-  >
+  <div class="v-window" @scroll="onScroll" ref="el">
     <ul
       class="v-list"
       :style="{
