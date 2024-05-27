@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-const list = Array.from({ length: 300 }, (_, i) => ({
+const list = Array.from({ length: 3000 }, (_, i) => ({
   data: `list item: ${i}`,
   id: i
 }));
@@ -8,7 +8,7 @@ const list = Array.from({ length: 300 }, (_, i) => ({
 <template>
   <main>
     <h1>Virtual List Page</h1>
-    <VirtualList :list="list" :item-height="100" :window-height="500" />
+    <VirtualList :list="list" :item-height="50" :window-height="500" />
   </main>
 </template>
 

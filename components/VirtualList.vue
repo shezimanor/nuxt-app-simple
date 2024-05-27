@@ -19,12 +19,13 @@ const props = defineProps({
     default: 500
   }
 });
+const edgeCount = ref(10);
 const scrollTop = ref(0);
 const startIndex = ref(0);
 const endIndex = ref(
   Math.min(
     props.list.length - 1,
-    Math.floor(props.windowHeight / props.itemHeight)
+    Math.floor(props.windowHeight / props.itemHeight) + edgeCount.value
   )
 );
 const itemCount = computed(() => props.list.length);
@@ -40,10 +41,14 @@ const renderList = computed(() =>
 const onScroll = (e: Event) => {
   const target = e.target as HTMLElement;
   scrollTop.value = target.scrollTop;
-  startIndex.value = Math.floor(scrollTop.value / props.itemHeight);
+  startIndex.value = Math.max(
+    0,
+    Math.floor(scrollTop.value / props.itemHeight) - edgeCount.value
+  );
   endIndex.value = Math.min(
     props.list.length - 1,
-    Math.floor((scrollTop.value + props.windowHeight) / props.itemHeight)
+    Math.floor((scrollTop.value + props.windowHeight) / props.itemHeight) +
+      edgeCount.value
   );
 };
 </script>
