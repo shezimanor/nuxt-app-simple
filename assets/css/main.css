@@ -7,7 +7,7 @@ nav {
 
 .v-window {
   @apply w-full bg-yellow-300 overflow-y-scroll;
-  height: 500px;
+  height: 80vh;
 }
 .v-list {
   @apply w-full relative;
