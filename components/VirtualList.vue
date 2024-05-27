@@ -1,9 +1,4 @@
 <script lang="ts" setup>
-interface ListItem {
-  data: string;
-  id: number;
-  _index: number;
-}
 const props = defineProps({
   list: {
     type: Array,
@@ -19,7 +14,7 @@ const props = defineProps({
     default: 500
   }
 });
-const edgeCount = ref(10);
+const edgeCount = ref(5);
 const scrollTop = ref(0);
 const startIndex = ref(0);
 const endIndex = ref(
@@ -72,7 +67,7 @@ const onScroll = (e: Event) => {
         :key="item._index"
         class="v-item"
         :style="{
-          top: `${item._index * itemHeight}px`,
+          transform: `translateY(${item._index * itemHeight}px)`,
           height: `${itemHeight}px`
         }"
       >
